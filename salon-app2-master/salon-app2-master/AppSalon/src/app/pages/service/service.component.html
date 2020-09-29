@@ -1,0 +1,103 @@
+<div class="container marketing">
+
+    <div class="py-5 text-center">
+        <h2>{{pageTitle}}</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 order-md-2 mb-6">
+            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Service Pictures</span>
+                <span class="badge badge-secondary badge-pill">{{pCount}}</span>
+            </h4>
+            <ng-container *ngIf="pCount>0">
+            <ul class="list-group mb-3" *ngFor='let img of fImgList'>
+
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <img class="featurette-image img-fluid mx-auto"  alt=""
+                    src="{{rootFolder+img.picturepath}}"
+                    data-holder-rendered="true">
+                </li>
+
+            </ul>
+            </ng-container>
+            <form class="card p-2">
+                <div class="input-group">
+                    <input accept="image/*" type="file" name="file" ng2FileSelect [uploader]="uploader" />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-secondary btn-sm" (click)="uploader.uploadAll()"
+                            [disabled]="!uploader.getNotUploadedItems().length">
+                            <span class="material-icons d-inline-block align-top">add</span>
+                            Upload photo
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h4 class="mb-3">Service Info</h4>
+            <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" role="form">
+
+                <div class="form-group row">
+                    <label for="title" class="col-sm-2 col-form-label">Title</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="title" id="title" placeholder="Title *"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.title.errors, 'is-valid': submitted1 && !f1.title.errors }" />
+
+                        <div *ngIf="submitted1 && f1.title.errors" class="invalid-feedback">
+                            <div *ngIf="f1.title.errors.required">Servie Title is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="details" class="col-sm-2 col-form-label">Details</label>
+                    <div class="col-sm-10">
+                        <textarea  type="text" rows="3" aria-multiline="true" class="form-control" formControlName="details"
+                            id="details" placeholder="Details"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.details.errors, 'is-valid': submitted1 && !f1.details.errors }" ></textarea>
+
+                        <div *ngIf="submitted1 && f1.details.errors" class="invalid-feedback">
+                            <div *ngIf="f1.details.errors.required">Service Details is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="cost" class="col-sm-2 col-form-label">Cost ($)</label>
+                    <div class="col-sm-10">
+                        <input type="number" formControlName="cost" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.cost.errors, 'is-valid': submitted1 && !f1.cost.errors }"
+                            placeholder="Service Cost * ">
+                        <div *ngIf="submitted1 && f1.cost.errors" class="invalid-feedback">
+                            <div *ngIf="f1.cost.errors.required">Cost is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-4">
+                        <a class="btn btn-danger btn-sm btn-block" href="/services">
+                            <span class="material-icons d-inline-block align-top">keyboard_backspace</span>
+                            Back
+                        </a>
+                    </div>
+                    <div class="col-sm-4">
+                        <button [disabled]="loading1" class="btn btn-primary btn-sm btn-block" type="submit">
+                            <span *ngIf="loading1" class="spinner-border spinner-border-sm mr-1"></span>
+                            <span class="material-icons d-inline-block align-top">save</span>
+                            Save
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div *ngIf='errorMessage' class='alert alert-danger'>
+            Error: {{ errorMessage }}
+        </div>
+    </div>
+
+</div>

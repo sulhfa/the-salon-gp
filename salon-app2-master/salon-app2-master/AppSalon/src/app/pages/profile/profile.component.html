@@ -1,0 +1,162 @@
+<div class="container marketing">
+
+    <div class="py-5 text-center">
+        <h2>{{pageTitle}}</h2>
+        <p class="lead">Please Regulary update your profile</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 order-md-2 mb-4">
+            <!--h4 class="d-flex justify-content-between align-items-center mb-3">
+                <span class="text-muted">Order Summary</span>
+                <span class="badge badge-secondary badge-pill">0</span>
+            </h4>
+            <ul class="list-group mb-3">
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Total Order</h6>
+                        <small class="text-muted">~</small>
+                    </div>
+                    <span class="text-muted">-</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                    <div>
+                        <h6 class="my-0">Total Cancel</h6>
+                        <small class="text-muted">~</small>
+                    </div>
+                    <span class="text-muted">-</span>
+                </li>
+            </ul-->
+        </div>
+        <div class="col-md-8">
+            <h4 class="mb-3">Account Information</h4>
+            <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" role="form">
+
+                <div class="form-group row">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-10">
+                        <input id="email" type="email" formControlName="username" class="form-control"
+                            placeholder="Email address * " readonly />
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <label for="password" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-10">
+                        <form class="form-group row" [formGroup]="passForm" (ngSubmit)="onPassChange()" role="form">
+                            <div class="col-sm-4">
+                                <input id="password" type="password" formControlName="password" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted2 && f2.password.errors, 'is-valid': submitted2 && !f2.password.errors }"
+                                    placeholder="*********" />
+                                <div *ngIf="submitted2 && f2.password.errors" class="invalid-feedback">
+                                    <div *ngIf="f2.password.errors.required">Password is required</div>
+                                    <div *ngIf="f2.password.errors.minlength">Password must be at least 6 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="password" formControlName="newpassword" class="form-control"
+                                    [ngClass]="{ 'is-invalid': submitted2 && f2.newpassword.errors, 'is-valid': submitted2 && !f2.password.errors }"
+                                    placeholder="New Password *" />
+                                <div *ngIf="submitted2 && f2.newpassword.errors" class="invalid-feedback">
+                                    <div *ngIf="f2.newpassword.errors.required">Password is required</div>
+                                    <div *ngIf="f2.newpassword.errors.minlength">Password must be at least 6 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <button [disabled]="loading2" class="btn btn-block btn-danger" type="submit">
+                                    <span *ngIf="loading2" class="spinner-border spinner-border-sm mr-1"></span>
+                                    Change Password
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <div class="form-group row" *ngIf="isOwner()">
+                    <label for="salonname" class="col-sm-2 col-form-label">Salon Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" formControlName="salonname" id="salonname"
+                            placeholder="Salon Name *"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.salonname.errors, 'is-valid': submitted1 && !f1.salonname.errors }" />
+
+                        <div *ngIf="submitted1 && f1.salonname.errors" class="invalid-feedback">
+                            <div *ngIf="f1.salonname.errors.required">Salon Name is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="fullname" class="col-sm-2 col-form-label">Full Name</label>
+                    <div class="col-sm-10">
+                        <input type="text" formControlName="fullname" class="form-control"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.fullname.errors, 'is-valid': submitted1 && !f1.fullname.errors }"
+                            placeholder="Full Name * ">
+                        <div *ngIf="submitted1 && f1.fullname.errors" class="invalid-feedback">
+                            <div *ngIf="f1.fullname.errors.required">Fullname is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                    <div class="col-sm-10">
+                        <ngx-intl-tel-input [cssClass]="'form-control'" [preferredCountries]="['gb']"
+                            [enableAutoCountrySelect]="true" [enablePlaceholder]="true" [searchCountryFlag]="false"
+                            [selectFirstCountry]="true" [maxLength]="15" [phoneValidation]="true"
+                            [separateDialCode]="false"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.phoneN.errors , 'is-valid': submitted1 && !f1.phoneN.errors}"
+                            formControlName="phoneN" name="phoneN">
+                        </ngx-intl-tel-input>
+                        <div *ngIf="submitted1 && f1.phoneN.errors" class="invalid-feedback">
+                            <div *ngIf="f1.phoneN.errors.required">Phone Number is required</div>
+                            <div *ngIf="f1.phoneN.errors.validatePhoneNumber">Phone Number is not valid</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="location" class="col-sm-2 col-form-label">City</label>
+                    <div class="col-sm-10">
+                        <input type="text" formControlName="location" class="form-control" id="location"
+                            placeholder="City"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.location.errors, 'is-valid': submitted1 && !f1.location.errors }" >
+                        <div *ngIf="submitted1 && f1.location.errors" class="invalid-feedback">
+                            <div *ngIf="f1.location.errors.required">Salon Name is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="address" class="col-sm-2 col-form-label">Address</label>
+                    <div class="col-sm-10">
+                        <input type="text" formControlName="address" class="form-control" id="address"
+                            placeholder="Address"
+                            [ngClass]="{ 'is-invalid': submitted1 && f1.address.errors, 'is-valid': submitted1 && !f1.location.errors }" >
+                        <div *ngIf="submitted1 && f1.address.errors" class="invalid-feedback">
+                            <div *ngIf="f1.address.errors.required">Salon Name is required</div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="mb-4">
+                <div class="form-group row">
+                    <label for="" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-4">
+                        <button [disabled]="loading1" class="btn btn-primary btn-lg btn-block" type="submit">
+                            <span *ngIf="loading1" class="spinner-border spinner-border-sm mr-1"></span>
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div *ngIf='errorMessage' class='alert alert-danger'>
+            Error: {{ errorMessage }}
+        </div>
+    </div>
+
+</div>

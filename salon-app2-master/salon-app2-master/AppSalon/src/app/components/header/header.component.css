@@ -1,0 +1,6 @@
+.navbar-dark{
+    background-color: black!important;
+}
+.navbar-nav > li > a:hover, .navbar-nav > li > a:focus {
+    color: #bf9456 ;
+}

@@ -1,0 +1,100 @@
+<div class="container marketing">
+
+    <div class="py-5 text-center">
+        <h2>{{pageTitle}}</h2>
+        <p class="lead"></p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="mb-3">My Services</h4>
+
+            <div class="navbar-light bg-light">
+                <input class="form-control form-control-dark w-100" [(ngModel)]='listFilter' type="text"
+                    placeholder="Search" aria-label="Search">
+            </div>
+            <br />
+            <div class='table-responsive'>
+                <table class='table table-sm table-hover table-striped' *ngIf='service && service.length'>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Service</th>
+                            <th>Details</th>
+                            <th>Cost</th>
+                            <th *ngIf="isAdmin()">Salon Name</th>
+                            <th *ngIf="isOwner()">Status</th>
+                            <!--th>#Pictures</!--th-->
+                            <th>Avg. Rate</th>
+                            <th>*</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let service of filteredServcie'>
+                            <td [ngClass]="{'alert-danger': service.status == 0 }">
+                                <b>{{ service.title }}</b>
+                            </td>
+                            <td [ngClass]="{'alert-danger': service.status == 0 }">{{ service.details }}</td>
+                            <td [ngClass]="{'alert-danger': service.status == 0 }">{{ service.cost }}</td>
+                            <td *ngIf="isAdmin()" [ngClass]="{'alert-danger': service.status == 0 }">
+                                {{ service.salonname }}
+                            </td>
+                            <td *ngIf="isOwner()" [ngClass]="{'alert-danger': service.status == 0 }">
+                                {{ service.status == 0? "Forbidden by Admin" : "Active" }}</td>
+                            <!--td [ngClass]="{'alert-danger': service.status == 0 }">{{ service.pcount }}
+                                <fa-icon *ngIf="service.pcount>0"
+                                   [icon]="['fas', 'check-circle']"></fa-icon>
+                            </!--td-->
+                            <td [ngClass]="{'alert-danger': service.status == 0 }">
+                                 <fa-icon *ngFor="let i of getStarCounter(5)" 
+                                 [ngClass]="{'yellowstar': (i < service.srate)}"
+                                   [icon]="['fas', 'star']"></fa-icon>
+                            </td>    
+                            <td >
+                                <div class="btn-toolbar">
+                                    <button (click)="onDelete(service)" class="btn btn-sm btn-danger" type="button">
+                                        <span class="material-icons d-inline-block align-top">delete</span>
+                                        Delete
+                                    </button>
+                                    <div class="col-sm-1"></div>
+                                    <button  *ngIf="isOwner() && service.status == 1"
+                                    (click)="onEdit(service)" class="btn btn-sm btn-warning" type="button">
+                                        <span class="material-icons d-inline-block align-top">edit</span>
+                                        Edit...
+                                    </button>
+
+                                    <button *ngIf="isAdmin()" (click)="changeStatus(service)"
+                                        [ngClass]="service.status == 1?'btn-warning':'btn-success'" 
+                                        class="btn btn-sm" type="button">
+                                        <span *ngIf="service.status == 1" class="material-icons d-inline-block align-top">visibility_off</span>
+                                        <span *ngIf="service.status != 1" class="material-icons d-inline-block align-top">visibility</span>
+                                        
+                                        {{service.status == 0? "Allow" : "Forbidden" }}
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <hr class="mb-4">
+                        <tr *ngIf="isOwner()">
+                            <thead>
+                                <button (click)="onAdd()" class="btn btn-sm btn-primary" type="button">
+                                    <span class="material-icons d-inline-block align-top">add</span>
+                                    Add New...
+                                </button>
+                            </thead>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div *ngIf='errorMessage' class='alert alert-danger'>
+            Error: {{ errorMessage }}
+        </div>
+        <div *ngIf="loading" class="alert">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        </div>
+    </div>
+
+</div>

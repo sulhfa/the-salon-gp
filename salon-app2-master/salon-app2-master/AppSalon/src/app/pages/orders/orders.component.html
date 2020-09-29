@@ -1,0 +1,120 @@
+<div class="container marketing">
+
+    <div class="py-5 text-center">
+        <h2>{{pageTitle}}</h2>
+        <p class="lead"></p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h4 class="mb-3">Order List</h4>
+            <h6 *ngIf='orders.length == 0'>No Order founded ...</h6>
+            <div class='table-responsive'>
+                <table class='table table-sm table-hover table-striped' *ngIf='orders && orders.length'>
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Order ID</th>
+                            <th>Order Date</th>
+                            <th>Service Name</th>
+                            <th>Total Cost $</th>
+                            <th>#Services</th>
+                            <th>Order Status</th>
+                            <th *ngIf="isClient() && id==1">*</th>
+                            <th *ngIf="isOwner() && id==3">*</th>
+                            <th *ngIf="isAdmin() && id==5">*</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor='let ord of orders; let i = index'>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }">
+                                {{i+1}}
+                            </td>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }">
+                                {{ord.id}}
+                            </td>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }">
+                                <b>{{ ord.date }}</b>
+                            </td>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }">{{ ord.orderdetail[0].serviceTitle }}</td>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }">{{ ord.totalcost }}</td>
+                            
+                            <td [ngClass]="{'alert-success': ord.status == 2 }">{{ ord.pcount }}</td>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }">
+                                {{ getStatus(ord.status) }}</td>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }" *ngIf="isClient() && id==1">
+                                <div class="btn-toolbar">
+                                    <button *ngIf="ord.status==1" (click)="changeStatus(ord,3)" class="btn btn-sm btn-danger" type="button">
+                                        <span class="material-icons d-inline-block align-top">cancel</span>
+                                        Cancel
+                                    </button>
+                                    <button *ngIf="ord.status==2" (click)="onComplete(ord,6)" class="btn btn-sm btn-success" type="button">
+                                        <span class="material-icons d-inline-block align-top">done</span>
+                                        Completed
+                                    </button>
+                                    <button *ngIf="ord.status==1" (click)="viewOnwerInfo(ord.orderdetail[0].serviceId)" class="btn btn-sm btn-primary" type="button">
+                                        <span class="material-icons d-inline-block align-top">call</span>
+                                        Call
+                                    </button>
+                                    <button (click)="changeStatus(ord,7)" class="btn btn-sm btn-warning" type="button">
+                                        <span class="material-icons d-inline-block align-top">report</span>
+                                        Report
+                                    </button>
+                                </div>
+                            </td>
+                            <td [ngClass]="{'alert-success': ord.status == 2 }" *ngIf="isOwner() && id==3">
+                                <div class="btn-toolbar">
+                                    <button *ngIf="ord.status == 1" (click)="changeStatus(ord,2)" class="btn btn-sm btn-success" type="button">
+                                        <span class="material-icons d-inline-block align-top">payment</span>
+                                        Received Payment 
+                                    </button>
+                                    <button *ngIf="ord.status==1" (click)="changeStatus(ord,4)" class="btn btn-sm btn-danger" type="button">
+                                        <span class="material-icons d-inline-block align-top">cancel</span>
+                                        Reject
+                                    </button>
+                                    <button *ngIf="ord.status==1" (click)="viewInfo(ord.user_id)" class="btn btn-sm btn-primary" type="button">
+                                        <span class="material-icons d-inline-block align-top">call</span>
+                                        Call
+                                    </button>
+                                    <button *ngIf="ord.status<3" (click)="changeStatus(ord,8)" class="btn btn-sm btn-warning" type="button">
+                                        <span class="material-icons d-inline-block align-top">report</span>
+                                        Report
+                                    </button>
+                                </div>
+                            </td>
+                            <td *ngIf="isAdmin() && id==5">
+                                <div class="btn-toolbar">
+                                    <button  (click)="viewInfo(ord.user_id)" class="btn btn-sm btn-primary" type="button">
+                                        <span class="material-icons d-inline-block align-top">call</span>
+                                        Call Client
+                                    </button>
+                                    <button  (click)="viewOnwerInfo(ord.orderdetail[0].serviceId)" 
+                                    class="btn btn-sm btn-secondary" type="button">
+                                        <span class="material-icons d-inline-block align-top">call</span>
+                                        Call Owner
+                                    </button>
+                                    <button (click)="changeStatus(ord,1)" class="btn btn-sm btn-success" type="button">
+                                        <span class="material-icons d-inline-block align-top">done</span>
+                                        Return 
+                                    </button>
+                                    <button (click)="changeStatus(ord,9)" class="btn btn-sm btn-danger" type="button">
+                                        <span class="material-icons d-inline-block align-top">delete</span>
+                                        Removed
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div *ngIf='errorMessage' class='alert alert-danger'>
+            Error: {{ errorMessage }}
+        </div>
+        <div *ngIf="loading" class="alert">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        </div>
+    </div>
+
+</div>
